@@ -1,0 +1,22 @@
+======================================================================
+RAPPORT D'ANALYSE DU DATASET
+======================================================================
+
+Total échantillons :
+  - Train : 30860 (70%)
+  - Val   : 8817 (20%)
+  - Test  : 4409 (10%)
+
+Ratio de déséquilibre : 344.8:1
+
+Poids de classe recommandés :
+  outside        : 81.21
+  inside         : 22.53
+  right of       : 4.72
+  left of        : 3.92
+  below          : 1.77
+  near           : 1.28
+  under          : 1.06
+  next to        : 0.75
+  above          : 0.62
+  on             : 0.24

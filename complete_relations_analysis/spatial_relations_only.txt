@@ -1,0 +1,35 @@
+==================================================
+RELATIONS SPATIALES - LISTE COMPLÈTE
+==================================================
+
+Total relations spatiales : 24
+Total échantillons : 63336
+
+--------------------------------------------------
+Relation                 Nombre
+--------------------------------------------------
+on                       18,645
+above                     7,083
+behind                    6,078
+next to                   5,902
+under                     4,220
+in front of               4,171
+near                      3,460
+in                        3,186
+below                     2,443
+beside                    1,963
+over                      1,504
+left of                   1,139
+by                        1,091
+right of                    959
+beneath                     734
+inside                      181
+against                     161
+at                          145
+around                      108
+between                      54
+outside                      54
+along                        35
+across                       16
+among                         4
+--------------------------------------------------

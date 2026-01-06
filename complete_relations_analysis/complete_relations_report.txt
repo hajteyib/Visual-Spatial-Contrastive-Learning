@@ -1,0 +1,1172 @@
+======================================================================
+RAPPORT COMPLET - TOUTES LES RELATIONS VRD
+======================================================================
+
+Nombre total de relations uniques : 1148
+Nombre total d'occurrences : 90052
+
+======================================================================
+DISTRIBUTION COMPLÈTE (toutes relations)
+======================================================================
+
+on                        :  18645
+has                       :  11211
+above                     :   7083
+wearing                   :   6393
+behind                    :   6078
+next to                   :   5902
+under                     :   4220
+in front of               :   4171
+near                      :   3460
+in                        :   3186
+below                     :   2443
+beside                    :   1963
+holding                   :   1536
+over                      :   1504
+left of                   :   1139
+by                        :   1091
+right of                  :    959
+beneath                   :    734
+on top of                 :    730
+attached to               :    597
+with                      :    591
+carrying                  :    254
+sitting on                :    251
+standing on               :    210
+riding                    :    199
+looking at                :    188
+inside                    :    181
+touching                  :    167
+against                   :    161
+covering                  :    157
+at                        :    145
+hanging on                :    126
+around                    :    108
+watching                  :    102
+standing near             :    102
+using                     :     94
+contains                  :     89
+has on                    :     78
+eating                    :     77
+walking on                :     65
+adjacent to               :     57
+sitting next to           :     55
+pulling                   :     55
+connected to              :     54
+between                   :     54
+outside                   :     54
+taller than               :     52
+across from               :     52
+standing next to          :     50
+says                      :     48
+crossing                  :     41
+parked on                 :     41
+before                    :     39
+driving                   :     38
+covered by                :     36
+along                     :     35
+sitting near              :     34
+floating on               :     34
+parked next to            :     33
+lying on                  :     32
+stopped on                :     32
+tied to                   :     30
+cutting                   :     29
+leaning on                :     29
+swinging                  :     29
+facing                    :     28
+moving on                 :     26
+playing                   :     26
+on side of                :     24
+sitting in                :     23
+on front of               :     23
+walking near              :     22
+of                        :     22
+parked near               :     22
+holding up                :     20
+shorter than              :     19
+running on                :     18
+casts                     :     16
+across                    :     16
+made of                   :     15
+beyond                    :     15
+sees                      :     14
+moving near               :     14
+flying                    :     14
+stopped next to           :     13
+stopped near              :     13
+talking on                :     13
+pushing                   :     12
+blocking                  :     12
+stepping on               :     12
+stands on                 :     12
+making                    :     12
+flying in                 :     12
+sitting at                :     12
+matches                   :     11
+hitting                   :     11
+grazing on                :     11
+part of                   :     11
+talking to                :     11
+surrounding               :     11
+standing in               :     10
+casting                   :     10
+showing                   :     10
+is made of                :     10
+following                 :     10
+wrapped around            :     10
+painted on                :     10
+far from                  :     10
+in front                  :     10
+operating                 :      9
+selling                   :      9
+feeding on                :      9
+in between                :      9
+reading                   :      9
+resting on                :      9
+wearing a                 :      9
+front of                  :      8
+standing in front of      :      8
+hold                      :      8
+standing behind           :      8
+watch                     :      8
+leans on                  :      8
+ahead of                  :      8
+sleeping on               :      8
+from                      :      8
+playing with              :      8
+smaller than              :      8
+walking next to           :      8
+drinking                  :      8
+stands in                 :      7
+covered in                :      7
+touch                     :      7
+is wearing a              :      7
+cover                     :      7
+reflected in              :      7
+passing                   :      7
+supporting                :      7
+working on                :      7
+inside of                 :      7
+hangs on                  :      7
+stacked on                :      7
+shows                     :      7
+waiting for               :      7
+worn by                   :      7
+surrounded by             :      7
+with a                    :      7
+sits at                   :      7
+close to                  :      7
+standing above            :      6
+to                        :      6
+behing                    :      6
+to the left               :      6
+is part of                :      6
+is for                    :      6
+growing on                :      6
+is standing in            :      6
+driving on                :      6
+entering                  :      6
+support                   :      6
+boarding                  :      6
+cooking                   :      6
+in a                      :      6
+standing by               :      6
+and                       :      6
+grabbing                  :      6
+hang from                 :      6
+folds                     :      6
+larger than               :      6
+leaving                   :      5
+is larger than            :      5
+sitting inside            :      5
+feeding                   :      5
+throws                    :      5
+listening to              :      5
+is pushing                :      5
+pulled by                 :      5
+held by                   :      5
+within                    :      5
+laying on                 :      5
+ride                      :      5
+faces                     :      5
+alongside                 :      5
+walking                   :      5
+standing                  :      5
+lifting                   :      5
+is on side of             :      5
+shining on                :      5
+on edge of                :      5
+leaning against           :      5
+is to left of             :      5
+is to right of            :      5
+catching                  :      5
+at bottom of              :      5
+holding onto              :      5
+under the                 :      5
+protects                  :      4
+in back of                :      4
+is smaller than           :      4
+outside of                :      4
+playing in                :      4
+reflects                  :      4
+sitting on top of         :      4
+doing tricks on           :      4
+among                     :      4
+kneeling on               :      4
+throwing                  :      4
+hits                      :      4
+protecting                :      4
+kicking                   :      4
+wearnig                   :      4
+in the middle of          :      4
+through                   :      4
+attach to                 :      4
+drawn on                  :      4
+hangs from                :      4
+off                       :      4
+petting                   :      4
+plugged into              :      4
+sitting                   :      4
+pointing at               :      4
+in middle of              :      4
+sit on                    :      4
+stuck on                  :      4
+supported by              :      4
+printed on                :      4
+balancing on              :      4
+on the right of           :      4
+makes                     :      4
+coming from               :      4
+moving in                 :      4
+matching                  :      4
+pushes                    :      4
+stopped at                :      4
+is in a                   :      4
+held up by                :      4
+reflects in               :      4
+infront                   :      4
+leading                   :      4
+posing with               :      4
+next                      :      4
+riding on                 :      4
+growing out of            :      4
+reaching into             :      3
+is behind the             :      3
+on a                      :      3
+standing under            :      3
+is higher than            :      3
+chasing                   :      3
+sitting in front of       :      3
+hugging                   :      3
+swimming in               :      3
+running towards           :      3
+nextto                    :      3
+belongs to                :      3
+parked in                 :      3
+written on                :      3
+fixing                    :      3
+leading to                :      3
+surround                  :      3
+next  to                  :      3
+full of                   :      3
+for                       :      3
+displaying                :      3
+at top of                 :      3
+walking to                :      3
+flying near               :      3
+is darker than            :      3
+flank                     :      3
+higher than               :      3
+talks to                  :      3
+look at                   :      3
+stuck to                  :      3
+afloat on                 :      3
+anchored to               :      3
+opposite of               :      3
+is against the            :      3
+walking beside            :      3
+opening                   :      3
+filled with               :      3
+is parked in              :      3
+protected by              :      3
+connects to               :      3
+cleaning                  :      3
+supports                  :      3
+sitting behind            :      3
+helping                   :      3
+walking towards           :      3
+looking out               :      3
+rides on                  :      3
+walking in                :      3
+walking in front of       :      3
+moving next to            :      3
+blowing                   :      3
+is in the front of        :      3
+on back of                :      3
+parking on                :      3
+at the top of             :      3
+is beside the             :      3
+is near the               :      3
+are hanging from          :      3
+reflected on              :      3
+is under the              :      3
+smoking                   :      3
+about to hit              :      3
+in the back of            :      3
+raises                    :      3
+see                       :      3
+behnid                    :      3
+viewing                   :      3
+are to the right of       :      3
+past                      :      3
+receiving                 :      3
+attatched to              :      3
+includes                  :      3
+onb                       :      2
+nex to                    :      2
+eating out of             :      2
+bending                   :      2
+are atached to            :      2
+is closer than            :      2
+is lower than             :      2
+aboe                      :      2
+floats on                 :      2
+directing                 :      2
+sailing on                :      2
+lying in                  :      2
+sucking                   :      2
+parked behind             :      2
+hanging                   :      2
+taking                    :      2
+guides                    :      2
+is leaning against        :      2
+hauling                   :      2
+grazing                   :      2
+posing on                 :      2
+walking across            :      2
+tucked into               :      2
+indicates                 :      2
+are to the left of        :      2
+building                  :      2
+b                         :      2
+giving                    :      2
+running under             :      2
+on the side of            :      2
+surfing on                :      2
+away from                 :      2
+falling off               :      2
+next tos                  :      2
+skiing on                 :      2
+sitting beside            :      2
+leaves                    :      2
+waiting at                :      2
+biting                    :      2
+shaking                   :      2
+diagonal to               :      2
+climbing                  :      2
+flying above              :      2
+are made of               :      2
+utilizing                 :      2
+goes into                 :      2
+photographing             :      2
+on way to                 :      2
+pointed at                :      2
+say                       :      2
+stretching                :      2
+in side of                :      2
+chained to                :      2
+placed on                 :      2
+snowboarding on           :      2
+does                      :      2
+made                      :      2
+herding                   :      2
+hair                      :      2
+floating above            :      2
+stands by                 :      2
+taking picture of         :      2
+hit                       :      2
+is covered with           :      2
+walking on top of         :      2
+running in                :      2
+walking down              :      2
+floating on top of        :      2
+pointing                  :      2
+stands next to            :      2
+is plugged into           :      2
+net to                    :      2
+steering                  :      2
+is painted on             :      2
+adorns                    :      2
+is following              :      2
+closing                   :      2
+coming out of             :      2
+releasing                 :      2
+wearign                   :      2
+sharing                   :      2
+parked in front of        :      2
+balancing                 :      2
+parked outside            :      2
+to the right              :      2
+are hanging on            :      2
+at end of                 :      2
+parked by                 :      2
+sleeping near             :      2
+nera                      :      2
+missing                   :      2
+holding a                 :      2
+taking pictures of        :      2
+stands                    :      2
+moving on top of          :      2
+dancing with              :      2
+sits in                   :      2
+looking                   :      2
+walking with              :      2
+jumping on                :      2
+folding                   :      2
+is standing next to       :      2
+guarding                  :      2
+hanging out of            :      2
+about                     :      2
+sleeps on                 :      2
+bowing to                 :      2
+attaches to               :      2
+wrapped in                :      2
+stopped in front of       :      2
+approaches                :      2
+posing near               :      2
+playing on                :      2
+approaching               :      2
+swings                    :      2
+white                     :      2
+behindt                   :      2
+is working on             :      2
+surfing                   :      2
+heading towards           :      2
+opposite                  :      2
+brushes                   :      2
+blowing at                :      2
+grasps                    :      2
+skateboarding on          :      2
+hanging off               :      2
+growing from              :      2
+has many                  :      2
+overlooks                 :      2
+separating                :      2
+mixed with                :      2
+greener than              :      2
+guiding                   :      2
+sitting under             :      2
+towing                    :      2
+satnding near             :      2
+hang on                   :      2
+sniffing                  :      2
+parked beside             :      2
+has around neck           :      2
+next tob                  :      2
+shoveling                 :      2
+flies in                  :      2
+bends                     :      2
+inbetween                 :      2
+controlling               :      2
+walking through           :      2
+writing on                :      2
+is driving past           :      2
+lighting                  :      2
+planted in                :      2
+loading                   :      2
+carring                   :      2
+points                    :      2
+reads                     :      2
+near by                   :      2
+is leading                :      2
+lying next to             :      2
+drinking out of           :      2
+made out of               :      2
+driving down              :      2
+spreading                 :      2
+pouring                   :      2
+standing at               :      2
+on left of                :      2
+operates                  :      2
+walks                     :      2
+catches                   :      2
+gliding on                :      2
+is on the left of         :      2
+is closed with            :      1
+holding hands with        :      1
+needs                     :      1
+helps                     :      1
+brown                     :      1
+follows                   :      1
+grow from                 :      1
+wants                     :      1
+is holing a               :      1
+hung on                   :      1
+has a lot of              :      1
+runs with                 :      1
+runs in                   :      1
+is farther away than      :      1
+marks                     :      1
+bolted to                 :      1
+bolted onto               :      1
+plugged in                :      1
+stack on                  :      1
+undernearth               :      1
+resting in                :      1
+is occupied by            :      1
+occupied by               :      1
+sitting front of          :      1
+stacked in                :      1
+number is                 :      1
+are round                 :      1
+light is                  :      1
+tosses                    :      1
+is in middle of           :      1
+laying                    :      1
+talking near              :      1
+sticked onto              :      1
+carried by                :      1
+looking in                :      1
+consuming                 :      1
+feeling                   :      1
+skateboarding in          :      1
+suports                   :      1
+parallel to               :      1
+plays with                :      1
+perched on                :      1
+taking off on             :      1
+walking away from         :      1
+decorate                  :      1
+is hooked to              :      1
+hooked                    :      1
+is open at                :      1
+not                       :      1
+sleeping next to          :      1
+crashing on               :      1
+ignoring                  :      1
+cut                       :      1
+next tp                   :      1
+driving near              :      1
+driving away from         :      1
+passing out               :      1
+are beyond                :      1
+producing                 :      1
+expells                   :      1
+circle                    :      1
+are tucked into           :      1
+hangs over                :      1
+is the to right of        :      1
+wearingb                  :      1
+one                       :      1
+filming                   :      1
+nexy to                   :      1
+connected by              :      1
+gesturing with            :      1
+bitting                   :      1
+face                      :      1
+requires                  :      1
+is on back of             :      1
+shading                   :      1
+bites                     :      1
+attachted to              :      1
+are not                   :      1
+exhausting                :      1
+is billowing from         :      1
+emitting                  :      1
+walking under             :      1
+is  on                    :      1
+rests                     :      1
+napping                   :      1
+going over                :      1
+going under               :      1
+is brighter than          :      1
+is growing                :      1
+to the side of            :      1
+are in a                  :      1
+attached by               :      1
+squashing                 :      1
+painted                   :      1
+reaching                  :      1
+ond                       :      1
+has on a                  :      1
+is numbered               :      1
+peels                     :      1
+is passing                :      1
+in front on               :      1
+spell                     :      1
+need                      :      1
+seeing the                :      1
+hugged by                 :      1
+going to top of           :      1
+goes                      :      1
+must have                 :      1
+in rear of                :      1
+along side                :      1
+in the front of           :      1
+had                       :      1
+level with                :      1
+looking over              :      1
+in the center of          :      1
+looks for change in       :      1
+bouncing                  :      1
+dribbling                 :      1
+driving past              :      1
+floatingo n               :      1
+house                     :      1
+points at                 :      1
+weaing                    :      1
+unpacking                 :      1
+moving to                 :      1
+manipulating              :      1
+walk on                   :      1
+trapping                  :      1
+pver                      :      1
+far fromt                 :      1
+contain                   :      1
+waxing                    :      1
+standing front of         :      1
+laying against            :      1
+grills                    :      1
+are covered with          :      1
+protect                   :      1
+hold up                   :      1
+lying near                :      1
+treading on               :      1
+is at the top of          :      1
+extending to              :      1
+lying down near           :      1
+resting at                :      1
+is walking towards        :      1
+drawing on                :      1
+drawing                   :      1
+hanging next to           :      1
+signals                   :      1
+is near rear of           :      1
+is at rear of             :      1
+is flying                 :      1
+pushed                    :      1
+is covered in             :      1
+extending                 :      1
+lining                    :      1
+looks down                :      1
+reaching for              :      1
+shelters                  :      1
+spraying                  :      1
+leads to                  :      1
+picking                   :      1
+taking photo with         :      1
+is lying across           :      1
+has reflective            :      1
+cheering                  :      1
+speeding on               :      1
+turning                   :      1
+forming in                :      1
+glued to                  :      1
+attached on               :      1
+is front of               :      1
+shirt                     :      1
+is embeded in             :      1
+stands in front of        :      1
+preparing                 :      1
+parked                    :      1
+adjusting                 :      1
+are smaller than          :      1
+is surrounding            :      1
+und                       :      1
+older than                :      1
+are in the middle of      :      1
+standing  behind          :      1
+benesth                   :      1
+parked above              :      1
+is ahead of               :      1
+buying                    :      1
+writes on                 :      1
+trying to touch           :      1
+scratching his            :      1
+raising                   :      1
+in fron                   :      1
+sticked on                :      1
+hanging over              :      1
+lying on top of           :      1
+in front of the           :      1
+looking at a              :      1
+opens                     :      1
+is stopped for            :      1
+pile                      :      1
+is sitting at             :      1
+shaking hands with        :      1
+laying besides            :      1
+as                        :      1
+studying                  :      1
+is blowing                :      1
+blows                     :      1
+waiting on                :      1
+waiting to                :      1
+is about                  :      1
+playing against           :      1
+neatly stacked near       :      1
+can                       :      1
+tugging                   :      1
+looking past              :      1
+biting on                 :      1
+moving under              :      1
+on the end of             :      1
+knealing by               :      1
+browsing                  :      1
+smiling                   :      1
+running on top of         :      1
+driving beside            :      1
+in near                   :      1
+goes under                :      1
+strapped onto             :      1
+spans across              :      1
+is hanging above          :      1
+is rolling                :      1
+sits                      :      1
+with painted              :      1
+is on the back of         :      1
+in the head of            :      1
+falls on                  :      1
+with long                 :      1
+is parked                 :      1
+flies                     :      1
+features                  :      1
+is lying on               :      1
+is by the                 :      1
+licking                   :      1
+explaining                :      1
+is wearing pink           :      1
+wearing plaid             :      1
+is wearing red            :      1
+is wearing yellow         :      1
+has blond                 :      1
+behinds                   :      1
+teaching                  :      1
+lying  on                 :      1
+lies on                   :      1
+praising                  :      1
+wheel                     :      1
+bike                      :      1
+sticking through          :      1
+covered with              :      1
+is close to               :      1
+is next  to               :      1
+is serving                :      1
+plugs into                :      1
+wrapping                  :      1
+reflecting                :      1
+bedside                   :      1
+turned                    :      1
+admiring                  :      1
+looking into              :      1
+is hugging                :      1
+is being hugged by        :      1
+attached tot              :      1
+pinned onto               :      1
+pets                      :      1
+sells                     :      1
+broke                     :      1
+breaks                    :      1
+is opposite               :      1
+sticking out of           :      1
+kicks                     :      1
+washing                   :      1
+floating in               :      1
+cleansed by               :      1
+cleans                    :      1
+drives on                 :      1
+behine                    :      1
+is sleeping on            :      1
+is lying                  :      1
+moving out from           :      1
+serving                   :      1
+form                      :      1
+weairng                   :      1
+pn                        :      1
+castign                   :      1
+slowly walking on         :      1
+heading near              :      1
+pull                      :      1
+stopping                  :      1
+stopped by                :      1
+blows out                 :      1
+threw                     :      1
+served                    :      1
+twisting                  :      1
+talking into              :      1
+balanced on               :      1
+smiles next to            :      1
+walking toward            :      1
+is right or               :      1
+taped onto                :      1
+used                      :      1
+is in front of the        :      1
+shone on by               :      1
+collecting                :      1
+visit                     :      1
+stopped in                :      1
+kicked by                 :      1
+kicked                    :      1
+zipping                   :      1
+out to                    :      1
+are covered in            :      1
+glows                     :      1
+is reflected on           :      1
+is not on                 :      1
+shove                     :      1
+is very                   :      1
+is shining                :      1
+running over              :      1
+floating                  :      1
+separated by              :      1
+hanging in                :      1
+are far from              :      1
+abovw                     :      1
+dividing                  :      1
+covererd by               :      1
+is black and              :      1
+ehind                     :      1
+flows under               :      1
+are parked beside         :      1
+disturbs                  :      1
+rolling behind            :      1
+socializing on            :      1
+is far from               :      1
+sticking                  :      1
+skating on                :      1
+cast                      :      1
+kneeling above            :      1
+is reflected in           :      1
+is moving towards         :      1
+is pulling out of         :      1
+has a front               :      1
+falling on                :      1
+occludes                  :      1
+too big for               :      1
+pours                     :      1
+sandwiching               :      1
+carved into               :      1
+tied on                   :      1
+sticks out of             :      1
+hiding under              :      1
+skates on                 :      1
+walks in                  :      1
+drives in                 :      1
+rides in                  :      1
+walk by                   :      1
+stacked next to           :      1
+is supporting             :      1
+gesturing at              :      1
+dices                     :      1
+built on                  :      1
+built into                :      1
+shining from              :      1
+surrounds                 :      1
+is pointing towards       :      1
+slides to                 :      1
+provides                  :      1
+shades                    :      1
+attached ot               :      1
+is supported to           :      1
+bending near              :      1
+has no                    :      1
+is standing beside        :      1
+resting arm on            :      1
+is beind                  :      1
+is at back of             :      1
+wrapped on                :      1
+drive on                  :      1
+goes over                 :      1
+juggling                  :      1
+are in blue               :      1
+on the end of the         :      1
+bounces                   :      1
+recording                 :      1
+sitting below             :      1
+stepping in               :      1
+trying to hit             :      1
+ready to hit              :      1
+spread around             :      1
+compliments               :      1
+walkign on                :      1
+adjusts                   :      1
+anchored near             :      1
+inbedded in               :      1
+is shorter                :      1
+pas                       :      1
+right                     :      1
+wearin                    :      1
+resting near              :      1
+sticking out from         :      1
+wearings                  :      1
+jumps on                  :      1
+pats                      :      1
+knead                     :      1
+giraffes                  :      1
+shines on                 :      1
+standing ong              :      1
+sitting above             :      1
+climbs                    :      1
+bows                      :      1
+are walking on            :      1
+run across                :      1
+is supported by           :      1
+is lifting                :      1
+falls off                 :      1
+closed by                 :      1
+is grazing in             :      1
+gating                    :      1
+walk                      :      1
+plugged in to             :      1
+decorated with a          :      1
+is right of the           :      1
+is left of the            :      1
+roof is                   :      1
+jumping in                :      1
+reflected                 :      1
+tucked in                 :      1
+is petting                :      1
+kissing                   :      1
+has an                    :      1
+docked near               :      1
+tied above                :      1
+is across road from       :      1
+walking past              :      1
+reading on                :      1
+mounted on                :      1
+are to right of           :      1
+jumping                   :      1
+on left                   :      1
+aiming for                :      1
+runs through              :      1
+is hanging                :      1
+fitted in                 :      1
+driving over              :      1
+as tall as                :      1
+wearning                  :      1
+ridings                   :      1
+look                      :      1
+meets                     :      1
+jumping over              :      1
+underneaeth               :      1
+is below the              :      1
+cooks                     :      1
+swimming                  :      1
+is to the left            :      1
+asking                    :      1
+on the back of            :      1
+in behind                 :      1
+leaning up agains         :      1
+amongst                   :      1
+stradling                 :      1
+sits near                 :      1
+sucks                     :      1
+carying                   :      1
+wiping                    :      1
+sitting in a              :      1
+on corner of              :      1
+is walking next to        :      1
+are walking past          :      1
+is as long as             :      1
+pumping                   :      1
+writing                   :      1
+named                     :      1
+stowing                   :      1
+is pouring                :      1
+aboev                     :      1
+taking off from           :      1
+flying from               :      1
+is at the back of         :      1
+overlook                  :      1
+is resting on             :      1
+is reflecting off         :      1
+blown out into            :      1
+rising on                 :      1
+is filled                 :      1
+perpendicular to          :      1
+placed around             :      1
+siting on                 :      1
+long                      :      1
+is held by                :      1
+is at the                 :      1
+in beside                 :      1
+waiting                   :      1
+stand                     :      1
+is across the             :      1
+handing                   :      1
+eating from               :      1
+binding                   :      1
+besdie                    :      1
+men                       :      1
+some                      :      1
+garage                    :      1
+at the bottom of          :      1
+drinks                    :      1
+moving into               :      1
+thinking on               :      1
+empty drawers             :      1
+open fridge               :      1
+orage safety lable        :      1
+glass mixing bowl         :      1
+mixing                    :      1
+lunch                     :      1
+emitting out              :      1
+hase                      :      1
+sittign                   :      1
+stacked behind            :      1
+looking through           :      1
+tied by                   :      1
+is standing in front      :      1
+is jumping with           :      1
+texting on                :      1
+plastered on              :      1
+is as tall as             :      1
+serves                    :      1
+working inside            :      1
+hooked up to              :      1
+flying over               :      1
+bicycling near            :      1
+fed by                    :      1
+exploring                 :      1
+laying in                 :      1
+are beside the            :      1
+is attched to             :      1
+built on top of           :      1
+ias                       :      1
+held on by                :      1
+newer than                :      1
+standing besides          :      1
+playing games in          :      1
+in the back of the        :      1
+lying down on             :      1
+bending towards           :      1
+means                     :      1
+holstered on              :      1
+seated on                 :      1
+crouching on              :      1
+far away from             :      1
+sucks on                  :      1
+has more hair than        :      1
+is equal size of          :      1
+is sitting                :      1
+hearding                  :      1
+is lef of                 :      1
+wheeling                  :      1
+lying above               :      1
+is behing                 :      1
+rooted in                 :      1
+undr                      :      1
+is neare                  :      1
+in next to                :      1
+boxing in                 :      1
+is out of                 :      1
+parked at                 :      1
+on the bottom of          :      1
+is on top                 :      1
+checking out              :      1
+being                     :      1
+are standing around       :      1
+is propped against        :      1
+serenades                 :      1
+on end of                 :      1
+belowt                    :      1
+belong to                 :      1
+servicing                 :      1
+being serviced by         :      1
+is on the end of          :      1
+is nailed to              :      1
+hanging above             :      1
+to  left of               :      1
+helping make              :      1
+sprayed on                :      1
+abouve                    :      1
+infront  of               :      1
+provide                   :      1
+eat                       :      1
+vacuums                   :      1
+steered with              :      1
+cuffs                     :      1
+are atached               :      1
+in top of                 :      1
+checking                  :      1
+are on a                  :      1
+is holding a              :      1
+is attached  to           :      1
+resting                   :      1
+is in the middle of       :      1
+belowc                    :      1
+in center of              :      1
+on top op                 :      1
+adjacent ot               :      1
+standing beside           :      1
+jumping with              :      1
+sharpening                :      1
+ontop of                  :      1
+rolled on                 :      1
+pasted on                 :      1
+sitting on the floor      :      1
+are having fun            :      1
+are enjoying the          :      1
+has foot on               :      1
+getting on                :      1
+waiting near              :      1
+locking                   :      1
+smelling                  :      1
+paralle to                :      1
+moving                    :      1
+gesturing to              :      1
+ties                      :      1
+bellow                    :      1
+stopping at               :      1
+beisde                    :      1
+border                    :      1
+on bottom of              :      1
+pointing to               :      1
+stands near               :      1
+does tricks on            :      1
+n                         :      1
+wait for                  :      1
+boards                    :      1
+shields                   :      1
+shearing                  :      1
+handles                   :      1
+bene                      :      1
+acrosst                   :      1
+is on q                   :      1
+growing near              :      1
+is from                   :      1
+goes to                   :      1
+wesrs                     :      1
+stand in                  :      1
+growing on top of         :      1
+loaded onto               :      1
+created                   :      1
+creates                   :      1
+down                      :      1
+causing                   :      1
+match                     :      1
+to sides of               :      1
+playing at                :      1
+going towards             :      1
+listen to                 :      1
+pole is                   :      1
+rolling on                :      1
+looking down at           :      1
+stops                     :      1
+is on the right of        :      1
+taped to                  :      1
+is full of                :      1
+
+======================================================================
+CATÉGORISATION
+======================================================================
+
+Relations SPATIALES UTILISÉES : 10
+  Total échantillons : 44086
+
+Relations SPATIALES DISPONIBLES : 13
+  Total échantillons : 18159
+
+Relations NON-SPATIALES : 1125
+  Total échantillons : 27807

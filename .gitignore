@@ -1,0 +1,145 @@
+# ========================================
+# CONTRASTIVE SPATIAL RELATIONS - .gitignore
+# ========================================
+
+# === DONNÉES (TRÈS LOURDES) ===
+# Dataset images VRD
+vrd/
+data/
+datasets/
+*.jpg
+*.jpeg
+*.png
+*.JPEG
+*.JPG
+
+# Annotations (garder seulement si petit)
+# Décommenter si les JSON sont trop gros
+# *.json
+
+# === CHECKPOINTS & MODÈLES (TRÈS LOURDS) ===
+checkpoints/
+experiments/
+saves/
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.pkl
+*.pickle
+
+# Logs et résultats
+logs/
+results/
+outputs/
+runs/
+wandb/
+
+# === PYTHON ===
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# === SYSTÈME ===
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# === IDE ===
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# === TEMPORAIRES ===
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.swp
+
+# === GEMINI ARTIFACTS (OPTIONNEL) ===
+# Décommenter si vous ne voulez pas partager les artifacts
+# .gemini/
+
+# === AUTRES ===
+# Fichiers de config locaux
+.env
+.env.local
+config_local.py
+
+# Fichiers volumineux divers
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Cache divers
+.cache/
+*.cache
