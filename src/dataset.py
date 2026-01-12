@@ -4,8 +4,8 @@ from PIL import Image
 import json
 import os
 import torchvision.transforms as transforms
-from utils_geometry import get_spatial_vector
-import config
+from .utils.geometry import get_spatial_vector
+from . import config
 
 class VRDDataset(Dataset):
     def __init__(self, subset='train', use_original_split=False):

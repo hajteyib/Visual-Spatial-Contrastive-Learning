@@ -10,9 +10,9 @@ from datetime import datetime
 import random
 
 # Import des fichiers locaux
-import config
-from dataset import VRDDataset
-from model import VisualEncoder, SpatialEncoder
+from . import config
+from .dataset import VRDDataset
+from .model import VisualEncoder, SpatialEncoder
 
 # === BALANCED BATCH SAMPLER (Exp #4) ===
 class BalancedBatchSampler(Sampler):

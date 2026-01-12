@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-import torchvision.models as models
-import config
+from torchvision import models
+from . import config
 
 class VisualEncoder(nn.Module):
     def __init__(self, embedding_dim=256):
