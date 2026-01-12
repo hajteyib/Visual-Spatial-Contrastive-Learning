@@ -4,15 +4,22 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, Sampler
 from tqdm import tqdm
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 import random
 
-# Import des fichiers locaux
-from . import config
-from .dataset import VRDDataset
-from .model import VisualEncoder, SpatialEncoder
+# Fix imports for both direct execution and module import
+if __name__ == "__main__":
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import src.config as config
+    from src.dataset import VRDDataset
+    from src.model import VisualEncoder, SpatialEncoder
+else:
+    from . import config
+    from .dataset import VRDDataset
+    from .model import VisualEncoder, SpatialEncoder
 
 # === BALANCED BATCH SAMPLER (Exp #4) ===
 class BalancedBatchSampler(Sampler):
