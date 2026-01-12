@@ -30,19 +30,49 @@ class VRDDataset(Dataset):
             self.img_dir = config.TRAIN_IMG_DIR
             self.json_path = config.TRAIN_JSON
 
-        # 2. Liste des relations spatiales qu'on veut garder (Filtre)
-        # ✅ SÉLECTION FINALE (10 classes équilibrées - Accord avec utilisateur)
-        # Retirées : inside (181), outside (54) - trop rares
-        # Retirées : behind, in front of - mal représentées par vecteur 8D
-        # Ajoutées : in (3186), over (1504) - bien représentables
+        # 2. Liste des relations spatiales - EXP #5 : 6 CLASSES FUSIONNÉES
+        # Stratégie : Fusionner relations similaires pour réduire confusion
+        # Résultat : Meilleur équilibre (8:1 vs 19:1) et moins d'ambiguïtés
+        
+        # Mapping : relation originale → classe fusionnée
+        self.class_merging = {
+            # Contact (garde séparé - performe bien)
+            'on': 'on',
+            
+            # Relations verticales hautes (above + over)
+            'above': 'vertical_above',
+            'over': 'vertical_above',
+            
+            # Relations verticales basses (below + under)
+            'below': 'vertical_below',
+            'under': 'vertical_below',
+            
+            # Proximité (near + next to - concept identique)
+            'near': 'proximity',
+            'next to': 'proximity',
+            
+            # Horizontal (left + right - symétrie)
+            'left of': 'horizontal',
+            'right of': 'horizontal',
+            
+            # Containment (garde séparé)
+            'in': 'in'
+        }
+        
+        # Relations originales acceptées (pour filtrage JSON)
+        self.original_relations = list(self.class_merging.keys())
+        
+        # Classes finales (6 au lieu de 10)
         self.target_relations = [
-            'on', 'under', 'above', 'below', 
-            'left of', 'right of', 'near', 'next to',
-            'in', 'over'  # ✅ CORRECT
+            'on',              # ~1,839 samples
+            'vertical_above',  # ~869 samples (725 above + 144 over)
+            'vertical_below',  # ~684 samples (259 below + 425 under)
+            'proximity',       # ~934 samples (320 near + 614 next to)
+            'horizontal',      # ~220 samples (125 left of + 95 right of)
+            'in'               # ~309 samples
         ]
         
-        # Création d'un dictionnaire pour convertir les mots en chiffres (Label encoding)
-        # ex: {'on': 0, 'under': 1, ...}
+        # Création dictionnaire Label encoding
         self.rel2idx = {rel: i for i, rel in enumerate(self.target_relations)}
         
         # 3. Chargement et Filtrage du JSON
@@ -64,17 +94,21 @@ class VRDDataset(Dataset):
             for rel in relationships:
                 predicat = rel['relationship'].lower().strip() # Nettoyage du texte
                 
-                # Si c'est une relation spatiale connue
-                if predicat in self.target_relations:
+                # Si c'est une relation spatiale connue (originale)
+                if predicat in self.original_relations:
+                    
+                    # Mapper vers classe fusionnée
+                    merged_class = self.class_merging[predicat]
                     
                     # Récupération des indices
                     idx_sujet = rel['objects'][0]
                     idx_objet = rel['objects'][1]
                     
-                    # On stocke juste ce qu'il faut pour charger plus tard
+                    # Stockage avec classe fusionnée
                     self.samples.append({
                         'filename': filename,
-                        'predicat': predicat,
+                        'predicat': merged_class,  # Classe fusionnée
+                        'original_predicat': predicat,  # Garde l'original pour debug
                         'sujet_info': objects[idx_sujet],
                         'objet_info': objects[idx_objet]
                     })

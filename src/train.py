@@ -146,12 +146,15 @@ def validate(visual_model, spatial_model, dataloader, device):
 
 
 def plot_curves(train_losses, val_losses, save_path):
-    """ Sauvegarde la courbe de loss. """
+    """ Sauvegarde la courbe de loss avec axe Y commençant à 0. """
     plt.figure(figsize=(10, 6))
     epochs = range(1, len(train_losses) + 1)
     
     plt.plot(epochs, train_losses, 'b-', label='Train Loss', linewidth=2)
     plt.plot(epochs, val_losses, 'r-', label='Val Loss', linewidth=2)
+    
+    # FIX Exp #5: Forcer Y-axis à démarrer à 0
+    plt.ylim(bottom=0)
     
     plt.xlabel('Epoch', fontsize=12)
     plt.ylabel('Loss', fontsize=12)
@@ -165,7 +168,7 @@ def plot_curves(train_losses, val_losses, save_path):
 
 def train():
     print("=" * 70)
-    print("ENTRAÎNEMENT CONTRASTIF - RELATIONS SPATIALES (Exp #4)")
+    print("ENTRAÎNEMENT CONTRASTIF - RELATIONS SPATIALES (Exp #5)")
     print("=" * 70)
     
     # --- 1. Dossier d'expérience ---
@@ -201,7 +204,7 @@ def train():
     # Sauvegarde config
     config_path = os.path.join(exp_dir, "config.txt")
     with open(config_path, 'w') as f:
-        f.write(f"=== EXP #4 - RESNET-18 + SUPERVISED CONTRASTIVE ===\n\n")
+        f.write(f"=== EXP #5 - 6 MERGED CLASSES + LONG TRAINING ===\n\n")
         f.write(f"Dataset:\n")
         f.write(f"  - Train: {len(train_ds)} samples\n")
         f.write(f"  - Val: {len(val_ds)} samples\n")
@@ -236,8 +239,8 @@ def train():
     
     best_val_loss = float('inf')
     patience_counter = 0
-    patience = 7
-    min_epochs = 20
+    patience = 12  # Exp #5: Long training (was 7)
+    min_epochs = 30  # Exp #5: Long training (was 20)
     
     history = {'train': [], 'val': [], 'val_acc': []}
     
