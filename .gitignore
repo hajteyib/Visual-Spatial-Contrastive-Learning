@@ -9,9 +9,13 @@ data/
 datasets/
 *.jpg
 *.jpeg
-*.png
 *.JPEG
 *.JPG
+
+# Exclure images datasets mais garder assets
+vrd/**/*.png
+data/**/*.png
+datasets/**/*.png
 
 # Annotations (garder seulement si petit)
 # Décommenter si les JSON sont trop gros

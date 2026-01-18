@@ -533,11 +533,33 @@ MSI-Projet_Spatial_Relations/
 ### Datasets
 - **VRD**: Lu et al. ["Visual Relationship Detection with Language Priors"](https://cs.stanford.edu/people/ranjaykrishna/vrd/), ECCV 2016
 - **PSG**: Yang et al. ["Panoptic Scene Graph Generation"](https://psgdataset.org/), ECCV 2022
+- **Visual Genome**: Krishna et al. "Visual Genome: Connecting Language and Vision Using Crowdsourced Dense Image Annotations", IJCV 2017
 
-### Méthodes
-- **InfoNCE Loss**: Oord et al. "Representation Learning with Contrastive Predictive Coding", 2018
+### Contrastive Learning
+- **InfoNCE Loss**: Oord et al. "Representation Learning with Contrastive Predictive Coding", arXiv 2018
 - **Supervised Contrastive**: Khosla et al. "Supervised Contrastive Learning", NeurIPS 2020
+- **SimCLR**: Chen et al. "A Simple Framework for Contrastive Learning of Visual Representations", ICML 2020
+- **CLIP**: Radford et al. "Learning Transferable Visual Models From Natural Language Supervision", ICML 2021
+- **MoCo**: He et al. "Momentum Contrast for Unsupervised Visual Representation Learning", CVPR 2020
+
+### Visual Relationships & Scene Understanding
+- **Scene Graph Generation**: Xu et al. "Scene Graph Generation by Iterative Message Passing", CVPR 2017
+- **Neural Motifs**: Zellers et al. "Neural Motifs: Scene Graph Parsing with Global Context", CVPR 2018
+- **Unbiased Scene Graph**: Tang et al. "Unbiased Scene Graph Generation from Biased Training", CVPR 2020
+- **Visual Commonsense**: Zellers et al. "From Recognition to Cognition: Visual Commonsense Reasoning", CVPR 2019
+
+### Spatial Reasoning
+- **Spatial Sense**: Krishna et al. "Referring Relationships", CVPR 2018
+- **Spatial Relations**: Hu et al. "Modeling Relationships in Referential Expressions with Compositional Modular Networks", CVPR 2017
+- **Geometry-Aware**: Zhang et al. "Graphical Contrastive Losses for Scene Graph Parsing", CVPR 2019
+
+### Architectures
 - **ResNet**: He et al. "Deep Residual Learning for Image Recognition", CVPR 2016
+- **EfficientNet**: Tan & Le "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks", ICML 2019
+
+### Transfer Learning & Evaluation
+- **Cross-Dataset Transfer**: Panareda Busto & Gall "Open Set Domain Adaptation", ICCV 2017
+- **SVM for Deep Features**: Sharif Razavian et al. "CNN Features Off-the-Shelf: An Astounding Baseline for Recognition", CVPR Workshops 2014
 
 ### Frameworks
 - PyTorch 2.0
@@ -554,7 +576,7 @@ Ce projet a été réalisé dans le cadre d'un Master en Vision par Ordinateur, 
 - La généralisation cross-dataset
 - L'évaluation scientifique rigoureuse
 
-**Compétences ** :
+**Compétences** :
 - Implémentation PyTorch avancée
 - Conception d'architecture dual-encoder
 - Expérimentation systématique (6 configurations)
