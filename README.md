@@ -1,64 +1,347 @@
-# Contrastive Spatial Relations
+# Visual Spatial Relations Learning with Contrastive Embeddings
 
-**Contrastive learning for spatial relations detection in Visual Relationship Detection (VRD)**
+**Apprentissage de Relations Spatiales par Embeddings Contrastifs**
 
-## 📋 Overview
+> Modélisation Systèmes Intelligents  - Vision par Ordinateur et Apprentissage Contrastif
 
-This project explores contrastive learning approaches for detecting spatial relationships between objects in images. Using the Visual Relationship Detection (VRD) dataset, we train dual-encoder models that learn to align visual and geometric representations of spatial relations.
+##
 
-## 🎯 Spatial Relations
+ 📋 Résumé
 
-We focus on 10 spatial relations:
-- **Vertical**: `above`, `below`, `on`, `under`, `over`
-- **Horizontal**: `left of`, `right of`
-- **Proximity**: `near`, `next to`
-- **Containment**: `in`
+Ce projet explore l'apprentissage par approche contrastive pour la détection de relations spatiales entre objets dans des images. En utilisant le dataset Visual Relationship Detection (VRD), nous développons des modèles dual-encodeurs qui apprennent à aligner les représentations visuelles et géométriques des relations spatiales.
+
+**Résultats clés** :
+- **62.40% accuracy** sur VRD (10 classes spatiales)
+- Architecture dual-encoder : ResNet-50 (visuel) + MLP (spatial)
+- Généralisation cross-dataset sur PSG (Recall@10: 84.26%)
+
+---
+
+## 🎯 Problématique
+
+### Objectif
+Développer un modèle capable de comprendre et classifier les **relations spatiales** entre objets détectés dans une image, en exploitant à la fois les informations visuelles et géométriques.
+
+### Relations Spatiales Cibles (10 classes)
+
+| Catégorie | Relations |
+|-----------|-----------|
+| **Verticales** | `above`, `below`, `on`, `under` |
+| **Horizontales** | `left of`, `right of` |
+| **Proximité** | `near`, `next to` |
+| **Containment** | `inside`, `outside` |
+
+### Challenges
+- Déséquilibre des classes (ex: "on" = 42% vs "outside" = 0.07%)
+- Ambiguïté sémantique (ex: "near" vs "next to")
+- Variabilité des contextes visuels
+- Généralisation cross-dataset
+
+---
 
 ## 🏗️ Architecture
 
-**Dual-Encoder Contrastive Learning:**
+### Dual-Encoder Contrastive Learning
 
 ```
-Visual Encoder (ResNet-18)
-  ├─ Crop Subject → Features (512D)
-  ├─ Crop Object → Features (512D)
-  └─ Projection → Embedding (256D)
-
-Spatial Encoder (MLP)
-  └─ Geometric Vector (8D) → Embedding (256D)
-
-Loss: Supervised Contrastive
+┌─────────────────────────────────────────────────────────────┐
+│                    INPUT: Image + BBoxes                    │
+│          (Subject BBox, Object BBox, Image Context)         │
+└────────────────────┬─────────────────────────────────────────┘
+                     │
+        ┌────────────┴────────────┐
+        │                         │
+┌───────▼────────┐        ┌──────▼────────┐
+│ VISUAL ENCODER │        │SPATIAL ENCODER│
+│   (ResNet-50)  │        │     (MLP)     │
+│                │        │               │
+│ Crop Subject   │        │ Geometric Vec │
+│ Crop Object    │        │   (8D)        │
+│ Features 2048D │        │ ┌───────────┐ │
+│      ↓         │        │ │ dx, dy    │ │
+│ Concatenate    │        │ │ distance² │ │
+│   4096D        │        │ │ angle     │ │
+│      ↓         │        │ │ areas     │ │
+│  Projection    │        │ └───────────┘ │
+│  4096→1024→128 │        │ 8→64→128→128  │
+└────────┬───────┘        └───────┬───────┘
+         │                        │
+         │   Embedding 128D       │   Embedding 128D
+         └────────┬───────────────┘
+                  │
+          ┌───────▼───────┐
+          │  CONTRASTIVE  │
+          │     LOSS      │
+          │  (InfoNCE /   │
+          │   SupCon)     │
+          └───────────────┘
 ```
 
-**Geometric Vector (8D):**
-- Normalized displacement (dx, dy)
-- Distance²
-- Angle encoding (sin θ, cos θ)
-- Area features (subject, object, ratio)
+### Vecteur Géométrique (8D)
 
-## 📊 Results
+```python
+spatial_vector = [
+    dx_norm,      # Déplacement horizontal normalisé
+    dy_norm,      # Déplacement vertical normalisé  
+    distance²,    # Distance² normalisée par diagonal
+    sin(θ),       # Angle direction (sin)
+    cos(θ),       # Angle direction (cos)
+    log(area_s),  # Log aire sujet
+    log(area_o),  # Log aire objet
+    iou           # Intersection over Union
+]
+```
 
-| Experiment | Architecture | Sampling | Accuracy |
-|------------|-------------|----------|----------|
-| Exp #1 | ResNet-18 + InfoNCE | Random | 61.67% |
-| Exp #2 | ResNet-50 + InfoNCE | Oversampling | 62.40% |
-| Exp #3 | EfficientNet-B0 | Random | 56.54% |
-| **Exp #4** | **ResNet-18 + Supervised** | **Balanced** | **~65%*** |
+---
 
-*In progress
+## 📊 Protocole Expérimental
 
-## 🚀 Quick Start
+### Dataset: Visual Relationship Detection (VRD)
 
-### Prerequisites
+**Distribution** :
+- Total: 5,000 images, 37,993 relations annotées
+- **Train**: 4,000 images
+- **Validation**: 1,000 images  
+- **Test**: 4,409 échantillons (10 classes spatiales)
+
+**Filtrage** : Relations spatiales uniquement (10 classes)
+
+### Hyperparamètres
+
+| Paramètre | Valeur |
+|-----------|--------|
+| Batch size | 16 |
+| Learning rate | 1e-4 |
+| Optimizer | Adam |
+| Epochs max | 50 |
+| Early stopping | 3 epochs patience |
+| Embedding dim | 128D (visuel + spatial) |
+| Image size | 128×128 |
+
+### Régularisation
+
+- **Backbone frozen**: Transfer learning depuis ImageNet
+- **Dropout**: 0.3 (visual), 0.2 (spatial)
+- **Data augmentation**: RandomHorizontalFlip, ColorJitter (train)
+- **Early stopping**: Sur validation accuracy
+
+---
+
+## 🔬 Expériences Menées
+
+### Vue d'Ensemble
+
+| Exp | Architecture | Loss | Sampling | Classes | Val Acc | Test Acc |
+|-----|--------------|------|----------|---------|---------|----------|
+| **#1** | ResNet-18 | InfoNCE | Random | 10 VRD | 48.01% | **61.67%** |
+| **#2** | ResNet-50 | InfoNCE | Balanced | 10 VRD | 56.88% | **62.40%** ⭐ |
+| #3 | EfficientNet-B0 | InfoNCE | Random | 10 VRD | 51.62% | 56.54% |
+| #4 | ResNet-18 | SupCon | Balanced | 10 VRD | - | (En cours) |
+| #5 | ResNet-18 | SupCon | Balanced | 6 merged | 10% | Échec |
+| #6 | ResNet-18 | InfoNCE | Random | 5 top | 44.3% | - |
+
+---
+
+## 📈 Résultats Détaillés
+
+### Exp #1: Baseline (ResNet-18 + InfoNCE)
+
+**Configuration** :
+- Architecture: ResNet-18 (11M params, frozen)
+- Loss: InfoNCE (self-supervised contrastive)
+- Sampling: Random
+- Epochs: 15 (early stopped)
+
+**Training Curve** :
+
+```
+Epoch | Train Loss | Val Loss | Val Acc
+------|------------|----------|--------
+1     | 2.4303     | 2.1613   | 25.53%
+5     | 1.8522     | 1.7402   | 39.20%
+10    | 1.6030     | 1.5756   | 44.14%
+15    | 1.4701     | 1.4463   | 48.01%
+```
+
+**Résultats Test** :
+- **Accuracy**: 61.67%
+- Visual seul: 53.14%
+- Spatial seul: 58.15%
+- **Fusion (V+S)**: 61.67%
+
+**Performance par Classe** :
+
+| Classe | Precision | Recall | F1-Score | Support |
+|--------|-----------|--------|----------|---------|
+| on | 0.69 | 0.91 | 0.78 | 1867 ✅ |
+| above | 0.71 | 0.68 | 0.69 | 714 ✅ |
+| under | 0.44 | 0.59 | 0.51 | 431 ⚠️ |
+| next to | 0.41 | 0.44 | 0.42 | 563 ⚠️ |
+| below | 0.42 | 0.10 | 0.16 | 243 ❌ |
+| left of | 1.00 | 0.02 | 0.03 | 116 ❌ |
+| right of | 0.00 | 0.00 | 0.00 | 105 ❌ |
+| near | 0.43 | 0.03 | 0.05 | 348 ❌ |
+| inside | 0.00 | 0.00 | 0.00 | 19 ❌ |
+| outside | 0.00 | 0.00 | 0.00 | 3 ❌ |
+
+---
+
+### Exp #2: Meilleur Modèle (ResNet-50 + InfoNCE) ⭐
+
+**Configuration** :
+- Architecture: ResNet-50 (25M params, frozen)
+- Loss: InfoNCE (contrastive)
+- Sampling: Balanced batch sampler
+- Epochs: 23 (early stopped)
+
+**Training Curve** :
+
+```
+Epoch | Train Loss | Val Loss | Val Acc
+------|------------|----------|--------
+1     | 2.1788     | 1.8121   | 36.50%
+5     | 1.4200     | 1.6035   | 47.39%
+10    | 1.0760     | 1.4436   | 52.48%
+15    | 0.8858     | 1.3034   | 55.94%
+20    | 0.7634     | 1.2958   | 57.79%
+23    | 0.6615     | 1.4205   | 56.88%
+```
+
+**Résultats Test** :
+- **Accuracy**: 62.40%
+- Visual seul: 55.50%
+- Spatial seul: 58.74%
+- **Fusion (V+S)**: 62.40% 🏆
+
+**Performance par Classe** :
+
+| Classe | Precision | Recall | F1-Score | Support |
+|--------|-----------|--------|----------|---------|
+| on | 0.70 | 0.91 | 0.79 | 1867 ✅ |
+| above | 0.73 | 0.69 | 0.71 | 714 ✅ |
+| under | 0.46 | 0.60 | 0.52 | 431 ✅ |
+| next to | 0.40 | 0.44 | 0.42 | 563 ⚠️ |
+| below | 0.49 | 0.14 | 0.21 | 243 ❌ |
+| left of | 0.50 | 0.03 | 0.06 | 116 ❌ |
+| right of | 0.50 | 0.02 | 0.04 | 105 ❌ |
+| near | 0.33 | 0.02 | 0.04 | 348 ❌ |
+| inside | 0.00 | 0.00 | 0.00 | 19 ❌ |
+| outside | 0.00 | 0.00 | 0.00 | 3 ❌ |
+
+**Amélioration vs Exp #1** :
+- Accuracy: +0.73 points
+- F1-Score moyen pondéré: +0.01
+- Meilleure convergence (loss plus bas)
+- Légère amélioration sur classes rares
+
+---
+
+### Exp #3: EfficientNet-B0
+
+**Résultats** :
+- Test Accuracy: 56.54%
+- Architecture plus compacte mais features moins riches
+- Training plus rapide mais performances inférieures
+
+---
+
+### Autres Expériences
+
+**Exp #4** : Supervised Contrastive + Balanced sampling (en cours)
+
+**Exp #5** : Classes fusionnées (6 classes)
+- Tentative de fusion sémantique: "vertical", "horizontal", "contact"...
+- **Échec**: 10% accuracy (confusion totale)
+- Leçon: La granularité originale est nécessaire
+
+**Exp #6** : Top-5 classes (on, above, under, next to, below)
+- 44.3% accuracy sur 5 classes sélectionnées
+- Objectif: Réduire déséquilibre
+- Résultat mitigé: Classes rares toujours problématiques
+
+---
+
+## 🌍 Généralisation Cross-Dataset (PSG)
+
+### Transfer Learning VRD → PSG
+
+Pour tester la capacité de généralisation, nous avons évalué le modèle VRD sur le dataset **Panoptic Scene Graph (PSG)** :
+
+**Protocole** :
+1. Utiliser les embeddings pré-entraînés (Exp #2)
+2. Entraîner un classifier SVM sur embeddings PSG
+3. Évaluer avec Recall@K metrics
+
+**Résultats (56 classes PSG complètes)** :
+```
+Accuracy (top-1):  35.27%
+Recall@1:          35.27%
+Recall@5:          72.87% ✅
+Recall@10:         84.26% ✅
+```
+
+**Résultats (14 classes spatiales PSG)** :
+```
+Accuracy:          43.11%
+
+Classes performantes:
+- over:        69% F1
+- on:          51% F1
+- beside:      47% F1
+- in front of: 45% F1
+```
+
+**Analyse** :
+- ✅ Bonne généralisation sur relations spatiales pures
+- ❌ Faible performance sur actions (eating, holding...)
+- ✅ Recall@10 excellent (84%) → Bon pour retrieval
+- Limitation: Features spatiales ne capturent pas détails visuels d'actions
+
+---
+
+## 💡 Analyse et Insights
+
+### Forces du Modèle
+
+1. **Relations dominantes** : Excellent sur "on", "above" (F1 > 70%)
+2. **Fusion efficace** : Visual + Spatial > chacun séparément
+3. **Transfer learning** : Generalise aux relations spatiales cross-dataset
+4. **Embeddings riches** : Recall@10 = 84% sur PSG
+
+### Limitations
+
+1. **Classes rares** : "outside", "inside", "right of" (< 20 samples) → 0% F1
+2. **Ambiguïté sémantique** : "near" vs "next to" difficile à distinguer
+3. **Déséquilibre** : "on" domine (42%) → biais de prédiction
+4. **Actions** : Features géométriques insuffisantes pour actions visuelles
+
+### Insights Clés
+
+| Observation | Implication |
+|-------------|-------------|
+| ResNet-50 > ResNet-18 | Features plus riches améliorent légèrement |
+| Spatial Encoder performant | Géométrie capture bien relations pures |
+| Classes rare problem | Besoin oversampling ou hard negative mining |
+| Cross-dataset OK pour spatial | Embeddings spatiaux généralisent |
+
+---
+
+## 🚀 Utilisation
+
+### Installation
 
 ```bash
-# Python 3.8+
-pip install torch torchvision numpy matplotlib scikit-learn tqdm Pillow
+# Clone repository
+git clone https://github.com/[your-username]/MSI-Projet_Spatial_Relations.git
+cd MSI-Projet_Spatial_Relations
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-### Dataset
+### Dataset VRD
 
-Download the [VRD dataset](https://cs.stanford.edu/people/ranjaykrishna/vrd/) and place it in `vrd/`:
+Télécharger le [VRD dataset](https://cs.stanford.edu/people/ranjaykrishna/vrd/) et placer dans `vrd/`:
 
 ```
 vrd/
@@ -67,76 +350,100 @@ vrd/
 └── annotations_test.json
 ```
 
-### Training
+### Entraînement
 
 ```bash
-python train.py
+# Train baseline
+python -m src.train
+
+# Result will be saved in checkpoints/exp_YYYYMMDD_HHMMSS/
 ```
 
-Results will be saved in `checkpoints/exp_YYYYMMDD_HHMMSS/`
-
-### Evaluation
+### Évaluation
 
 ```bash
-python evaluate.py checkpoints/exp_YYYYMMDD_HHMMSS
+# Evaluate checkpoint
+python -m src.evaluate checkpoints/exp_YYYYMMDD_HHMMSS
+
+# Cross-dataset evaluation (PSG)
+python scripts/evaluate_psg_full56.py
 ```
-
-## 📁 Project Structure
-
-```
-.
-├── config.py              # Configuration and paths
-├── dataset.py             # VRD dataset loader
-├── model.py               # Visual & Spatial encoders
-├── train.py               # Training script (contrastive)
-├── evaluate.py            # Evaluation with SVM classifier
-├── utils_geometry.py      # Geometric vector computation
-└── checkpoints/           # Experiment results
-```
-
-## 🔬 Key Features
-
-- **Supervised Contrastive Loss**: Uses labels to define positive/negative pairs
-- **Balanced Batch Sampling**: Ensures equal representation of all classes
-- **Frozen Backbone**: Transfer learning from ImageNet
-- **8D Geometric Encoding**: Position, distance, angle, and size features
-
-## 📈 Experiments
-
-### Exp #1 - Baseline
-- ResNet-18, InfoNCE loss, random sampling
-- **Result**: 61.67% accuracy
-
-### Exp #2 - ResNet-50
-- Larger backbone, oversampling rare classes
-- **Result**: 62.40% accuracy
-
-### Exp #3 - EfficientNet-B0
-- Efficient architecture, faster training
-- **Result**: 56.54% accuracy (worse, features too compact)
-
-### Exp #4 - Supervised + Balanced
-- Supervised contrastive, balanced batch sampler
-- **Status**: In progress
-
-## 🎓 Academic Context
-
-This project is part of a Master's program exploring contrastive learning for visual-spatial reasoning. The focus is on understanding how geometric and visual information can be jointly learned through contrastive objectives.
-
-## 📝 License
-
-[Add your license here]
-
-## 🙏 Acknowledgments
-
-- VRD Dataset: [Visual Relationship Detection with Language Priors](https://cs.stanford.edu/people/ranjaykrishna/vrd/)
-- PyTorch team
-- ResNet, EfficientNet pre-trained models (ImageNet)
-
-## 📧 Contact
-
-[Your contact information]
 
 ---
 
-**Note**: This is an exploratory research project. Results and implementations are subject to ongoing experimentation.
+## 📁 Structure du Projet
+
+```
+MSI-Projet_Spatial_Relations/
+│
+├── README.md                    ← Ce fichier
+├── requirements.txt             ← Dépendances Python
+├── .gitignore
+│
+├── src/                         ← Code source principal
+│   ├── config.py                ← Configuration système
+│   ├── dataset.py               ← DataLoader VRD
+│   ├── model.py                 ← Architectures encodeurs
+│   ├── train.py                 ← Pipeline entraînement
+│   ├── evaluate.py              ← Évaluation checkpoints
+│   └── utils/
+│       └── geometry.py          ← Calculs géométriques
+│
+├── scripts/                     ← Scripts utilitaires
+│   ├── analyze_dataset.py
+│   ├── visualize_vrd.py
+│   └── evaluate_psg_full56.py   ← Éval cross-dataset
+│
+├── experiments/                 ← Documentation expériences
+│   ├── README.md                ← Vue d'ensemble résultats
+│   ├── EXP2_CONFIG.md
+│   └── results/
+│       └── psg_evaluation.txt
+│
+└── assets/                      ← Images README
+    └── loss_curve.png
+```
+
+---
+
+## 📚 Références
+
+### Datasets
+- **VRD**: Lu et al. ["Visual Relationship Detection with Language Priors"](https://cs.stanford.edu/people/ranjaykrishna/vrd/), ECCV 2016
+- **PSG**: Yang et al. ["Panoptic Scene Graph Generation"](https://psgdataset.org/), ECCV 2022
+
+### Méthodes
+- **InfoNCE Loss**: Oord et al. "Representation Learning with Contrastive Predictive Coding", 2018
+- **Supervised Contrastive**: Khosla et al. "Supervised Contrastive Learning", NeurIPS 2020
+- **ResNet**: He et al. "Deep Residual Learning for Image Recognition", CVPR 2016
+
+### Frameworks
+- PyTorch 2.0
+- torchvision (pre-trained models)
+- scikit-learn (SVM evaluation)
+
+---
+
+## 👨‍🎓 Contexte Académique
+
+Ce projet a été réalisé dans le cadre d'un Master en Vision par Ordinateur, avec un focus sur :
+- L'apprentissage contrastif pour la vision
+- La compréhension des relations spatiales
+- La généralisation cross-dataset
+- L'évaluation scientifique rigoureuse
+
+**Compétences démontrées** :
+- Implémentation PyTorch avancée
+- Conception d'architecture dual-encoder
+- Expérimentation systématique (6 configurations)
+- Analyse quantitative et qualitative
+- Transfer learning cross-dataset
+
+---
+
+## 📧 Contact
+
+El haj Samitt Ebou 
+el-haj-samitt.ebou@etu.u-paris.fr 
+
+

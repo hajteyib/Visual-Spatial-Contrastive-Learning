@@ -4,22 +4,15 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, Sampler
 from tqdm import tqdm
 import os
-import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 import random
 
-# Fix imports for both direct execution and module import
-if __name__ == "__main__":
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    import src.config as config
-    from src.dataset import VRDDataset
-    from src.model import VisualEncoder, SpatialEncoder
-else:
-    from . import config
-    from .dataset import VRDDataset
-    from .model import VisualEncoder, SpatialEncoder
+# Imports locaux
+from . import config
+from .dataset import VRDDataset
+from .model import VisualEncoder, SpatialEncoder
 
 # === BALANCED BATCH SAMPLER (Exp #4) ===
 class BalancedBatchSampler(Sampler):
@@ -69,18 +62,19 @@ class BalancedBatchSampler(Sampler):
         return self.num_batches
 
 
-# === SUPERVISED CONTRASTIVE LOSS (Exp #4) ===
-def supervised_contrastive_loss(z_v, z_s, labels, temperature=0.07):
+# === INFONCE LOSS (Exp #6 - MPS Compatible) ===
+def infonce_loss(z_v, z_s, temperature=0.07):
     """
-    Loss contrastive supervisée qui utilise les labels.
+    Loss InfoNCE : Self-supervised contrastive learning.
     
-    Positifs : Paires avec MÊME label (même relation spatiale)
-    Négatifs : Paires avec labels DIFFÉRENTS
+    Implémentation manuelle (sans cross_entropy) pour compatibilité MPS.
+    
+    Positifs : Paire (visual, spatial) du MÊME sample
+    Négatifs : Toutes les autres paires dans le batch
     
     Args:
         z_v: Embeddings visuels normalisés [batch, 256]
         z_s: Embeddings spatiaux normalisés [batch, 256]
-        labels: Labels [batch] (0-9 pour 10 classes)
         temperature: Température pour scaling
     """
     batch_size = z_v.size(0)
@@ -89,38 +83,32 @@ def supervised_contrastive_loss(z_v, z_s, labels, temperature=0.07):
     # Similarités entre visual et spatial
     sim_matrix = torch.matmul(z_v, z_s.T) / temperature  # [batch, batch]
     
-    # Masque des paires positives (même label)
-    labels = labels.unsqueeze(1)  # [batch, 1]
-    pos_mask = (labels == labels.T).float()  # [batch, batch]
-    pos_mask.fill_diagonal_(0)  # Exclure self-similarity
+    # Positifs = diagonal (même sample)
+    # Log-softmax manuel pour éviter problèmes MPS avec cross_entropy
     
-    # Nombre de positifs par sample
-    num_positives = pos_mask.sum(dim=1)  # [batch]
+    # Visual to Spatial
+    exp_sim = torch.exp(sim_matrix)  # [batch, batch]
+    sum_exp = exp_sim.sum(dim=1, keepdim=True)  # [batch, 1]
+    log_prob = sim_matrix - torch.log(sum_exp)  # log_softmax manuel
     
-    # Exponentielle des similarités
-    exp_sim = torch.exp(sim_matrix)
+    # Loss = -log_prob de la diagonale (positifs)
+    loss_v2s = -torch.diagonal(log_prob).mean()
     
-    # Somme des similarités avec positifs
-    pos_sum = (exp_sim * pos_mask).sum(dim=1)  # [batch]
+    # Spatial to Visual (symétrique)
+    exp_sim_t = exp_sim.T
+    sum_exp_t = exp_sim_t.sum(dim=1, keepdim=True)
+    log_prob_t = sim_matrix.T - torch.log(sum_exp_t)
     
-    # Somme totale (exclure self)
-    total_sum = exp_sim.sum(dim=1) - torch.exp(torch.diagonal(sim_matrix))  # [batch]
+    loss_s2v = -torch.diagonal(log_prob_t).mean()
     
-    # Loss : -log(pos_sum / total_sum)
-    loss = -torch.log((pos_sum + 1e-8) / (total_sum + 1e-8))
-    
-    # Moyenne seulement sur samples ayant des positifs
-    valid_mask = num_positives > 0
-    if valid_mask.sum() > 0:
-        loss = loss[valid_mask].mean()
-    else:
-        loss = torch.tensor(0.0, device=device)
+    # Loss finale = moyenne des deux directions
+    loss = (loss_v2s + loss_s2v) / 2.0
     
     return loss
 
 
 def validate(visual_model, spatial_model, dataloader, device):
-    """ Calcule la loss et accuracy sur validation. """
+    """ Calcule la loss et accuracy sur validation avec InfoNCE. """
     visual_model.eval()
     spatial_model.eval()
     total_loss = 0.0
@@ -128,24 +116,24 @@ def validate(visual_model, spatial_model, dataloader, device):
     total_samples = 0
     
     with torch.no_grad():
-        for img_s, img_o, spatial_vec, labels in dataloader:
+        for img_s, img_o, spatial_vec, labels in dataloader: # labels are not used in InfoNCE validation
             img_s, img_o = img_s.to(device), img_o.to(device)
-            spatial_vec, labels = spatial_vec.to(device), labels.to(device)
+            spatial_vec = spatial_vec.to(device)
             
             # Forward
             z_v = visual_model(img_s, img_o)
             z_s = spatial_model(spatial_vec)
             
-            # Loss
-            loss = supervised_contrastive_loss(z_v, z_s, labels)
+            # Loss InfoNCE
+            loss = infonce_loss(z_v, z_s)
             total_loss += loss.item()
             
-            # Accuracy (similarité maximale)
+            # Accuracy : diagonal correcte
             sim_matrix = torch.matmul(z_v, z_s.T)
             predictions = sim_matrix.argmax(dim=1)
-            correct_predictions = torch.arange(labels.size(0), device=device)
+            correct_predictions = torch.arange(img_s.size(0), device=device) # Use img_s.size(0) for batch size
             total_correct += (predictions == correct_predictions).sum().item()
-            total_samples += labels.size(0)
+            total_samples += img_s.size(0) # Use img_s.size(0) for batch size
     
     avg_loss = total_loss / len(dataloader)
     accuracy = total_correct / total_samples
@@ -175,7 +163,7 @@ def plot_curves(train_losses, val_losses, save_path):
 
 def train():
     print("=" * 70)
-    print("ENTRAÎNEMENT CONTRASTIF - RELATIONS SPATIALES (Exp #5)")
+    print("ENTRAÎNEMENT CONTRASTIF - RELATIONS SPATIALES (Exp #6)")
     print("=" * 70)
     
     # --- 1. Dossier d'expérience ---
@@ -194,25 +182,27 @@ def train():
     print(f"✅ Val: {len(val_ds)} samples")
     print(f"✅ Test: {len(test_ds)} samples (réservé pour évaluation finale)")
     
-    # --- 3. Dataloaders avec Balanced Sampler ---
-    print("\n--- Configuration Balanced Batch Sampler ---")
-    train_sampler = BalancedBatchSampler(train_ds, batch_size=config.BATCH_SIZE)
-    print(f"  Batches par epoch: {len(train_sampler)}")
-    print(f"  Samples par classe/batch: ~{train_sampler.samples_per_class}")
+    # --- 3. Dataloaders avec Random Sampling (InfoNCE) ---
+    print("\n--- Configuration Random Sampling (InfoNCE) ---")
     
     train_loader = DataLoader(
         train_ds,
-        batch_sampler=train_sampler,
+        batch_size=config.BATCH_SIZE,
+        shuffle=True,
         num_workers=0
     )
     
     val_loader = DataLoader(val_ds, batch_size=config.BATCH_SIZE, shuffle=False, num_workers=0)
     
+    print(f"  Batches par epoch: {len(train_loader)}")
+    print(f"  Type: Random shuffle (pas de balanced sampler)")
+    
     # Sauvegarde config
     config_path = os.path.join(exp_dir, "config.txt")
     with open(config_path, 'w') as f:
-        f.write(f"=== EXP #5 - 6 MERGED CLASSES + LONG TRAINING ===\n\n")
+        f.write(f"=== EXP #6 - TOP-5 CLASSES + INFONCE LOSS ===\n\n")
         f.write(f"Dataset:\n")
+        f.write(f"  - Classes: {train_ds.target_relations}\n")
         f.write(f"  - Train: {len(train_ds)} samples\n")
         f.write(f"  - Val: {len(val_ds)} samples\n")
         f.write(f"  - Test: {len(test_ds)} samples\n\n")
@@ -224,8 +214,8 @@ def train():
         f.write(f"Architecture:\n")
         f.write(f"  - Visual: ResNet-18 frozen + Projection (dropout 0.4)\n")
         f.write(f"  - Spatial: MLP 8→64→128→256 (dropout 0.3)\n")
-        f.write(f"  - Loss: Supervised Contrastive\n")
-        f.write(f"  - Sampler: Balanced Batch Sampler\n")
+        f.write(f"  - Loss: InfoNCE (self-supervised)\n")
+        f.write(f"  - Sampler: Random shuffle\n")
     print(f"📝 Configuration sauvegardée : {config_path}")
     
     # --- 4. Modèles ---
@@ -265,14 +255,15 @@ def train():
             
             for img_s, img_o, spatial_vec, labels in pbar:
                 img_s, img_o = img_s.to(config.device), img_o.to(config.device)
-                spatial_vec, labels = spatial_vec.to(config.device), labels.to(config.device)
+                spatial_vec = spatial_vec.to(config.device)
+                # labels not used in InfoNCE
                 
                 # Forward
                 z_v = visual_model(img_s, img_o)
                 z_s = spatial_model(spatial_vec)
                 
-                # Supervised Contrastive Loss
-                loss = supervised_contrastive_loss(z_v, z_s, labels)
+                # InfoNCE Loss (self-supervised)
+                loss = infonce_loss(z_v, z_s)
                 
                 # Backward
                 optimizer.zero_grad()

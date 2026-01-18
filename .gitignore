@@ -17,10 +17,16 @@ datasets/
 # Décommenter si les JSON sont trop gros
 # *.json
 
+# PSG Dataset et résultats (trop lourds)
+psg/
+psg_results_56classes/
+psg_embeddings.pkl
+psg_spatial14_results.txt
+psg_*.pkl
+
 # === CHECKPOINTS & MODÈLES (TRÈS LOURDS) ===
+# Checkpoints PyTorch
 checkpoints/
-experiments/
-saves/
 *.pth
 *.pt
 *.ckpt

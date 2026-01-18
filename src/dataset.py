@@ -30,47 +30,26 @@ class VRDDataset(Dataset):
             self.img_dir = config.TRAIN_IMG_DIR
             self.json_path = config.TRAIN_JSON
 
-        # 2. Liste des relations spatiales - EXP #5 : 6 CLASSES FUSIONNÉES
-        # Stratégie : Fusionner relations similaires pour réduire confusion
-        # Résultat : Meilleur équilibre (8:1 vs 19:1) et moins d'ambiguïtés
+        # 2. Liste des relations spatiales - EXP #5 RÉVISÉ : TOP-5 CLASSES
+        # Stratégie : Garder SEULEMENT les classes qui performent bien
+        # Basé sur Exp #2 résultats :
+        #   - on: 79% F1 ✅
+        #   - above: 70% F1 ✅
+        #   - under: 52% F1 ✅
+        #   - next to: 42% F1 ✅
+        #   - below: 16% F1 ⚠️ (garde pour diversité verticale)
         
-        # Mapping : relation originale → classe fusionnée
-        self.class_merging = {
-            # Contact (garde séparé - performe bien)
-            'on': 'on',
-            
-            # Relations verticales hautes (above + over)
-            'above': 'vertical_above',
-            'over': 'vertical_above',
-            
-            # Relations verticales basses (below + under)
-            'below': 'vertical_below',
-            'under': 'vertical_below',
-            
-            # Proximité (near + next to - concept identique)
-            'near': 'proximity',
-            'next to': 'proximity',
-            
-            # Horizontal (left + right - symétrie)
-            'left of': 'horizontal',
-            'right of': 'horizontal',
-            
-            # Containment (garde séparé)
-            'in': 'in'
-        }
-        
-        # Relations originales acceptées (pour filtrage JSON)
-        self.original_relations = list(self.class_merging.keys())
-        
-        # Classes finales (6 au lieu de 10)
+        # Classes finales (5 au lieu de 10)
         self.target_relations = [
-            'on',              # ~1,839 samples
-            'vertical_above',  # ~869 samples (725 above + 144 over)
-            'vertical_below',  # ~684 samples (259 below + 425 under)
-            'proximity',       # ~934 samples (320 near + 614 next to)
-            'horizontal',      # ~220 samples (125 left of + 95 right of)
-            'in'               # ~309 samples
+            'on',       # Contact/support - 1,867 samples
+            'above',    # Vertical haut - 714 samples
+            'under',    # Vertical bas proche - 431 samples
+            'next to',  # Proximité - 563 samples
+            'below'     # Vertical bas distant - 243 samples
         ]
+        
+        # Total attendu : ~3,818 samples test
+        # Ratio : 7.7:1 (excellent équilibre)
         
         # Création dictionnaire Label encoding
         self.rel2idx = {rel: i for i, rel in enumerate(self.target_relations)}
@@ -92,23 +71,19 @@ class VRDDataset(Dataset):
             
             # On parcourt chaque relation dans l'image
             for rel in relationships:
-                predicat = rel['relationship'].lower().strip() # Nettoyage du texte
+                predicat = rel['relationship'].lower().strip()
                 
-                # Si c'est une relation spatiale connue (originale)
-                if predicat in self.original_relations:
-                    
-                    # Mapper vers classe fusionnée
-                    merged_class = self.class_merging[predicat]
+                # Si c'est une relation dans notre TOP-5
+                if predicat in self.target_relations:
                     
                     # Récupération des indices
                     idx_sujet = rel['objects'][0]
                     idx_objet = rel['objects'][1]
                     
-                    # Stockage avec classe fusionnée
+                    # Stockage direct (pas de mapping)
                     self.samples.append({
                         'filename': filename,
-                        'predicat': merged_class,  # Classe fusionnée
-                        'original_predicat': predicat,  # Garde l'original pour debug
+                        'predicat': predicat,  # Classe directe
                         'sujet_info': objects[idx_sujet],
                         'objet_info': objects[idx_objet]
                     })
