@@ -2,7 +2,7 @@
 
 **Apprentissage de Relations Spatiales par Embeddings Contrastifs**
 
-> Modélisation Systèmes Intelligents  - Vision par Ordinateur et Apprentissage Contrastif
+> Modélisation Systèmes Intelligents  - Modélisation des relations spatiales à partir de données raster . 
 
 ##
 
@@ -32,10 +32,61 @@ Développer un modèle capable de comprendre et classifier les **relations spati
 | **Containment** | `inside`, `outside` |
 
 ### Challenges
-- Déséquilibre des classes (ex: "on" = 42% vs "outside" = 0.07%)
-- Ambiguïté sémantique (ex: "near" vs "next to")
-- Variabilité des contextes visuels
-- Généralisation cross-dataset
+- **Ambiguïté sémantique** : Frontières floues entre relations (near vs next to)
+- **Déséquilibre des classes** : Ratio 344:1 (on vs outside)
+- **Dépendance au contexte** : Interprétation variable selon échelle
+- **Généralisation cross-dataset** : Transfer learning VRD → PSG
+
+---
+
+## 📊 Dataset: Visual Relationship Detection (VRD)
+
+### Vue d'Ensemble
+
+Le **Visual Relationship Detection (VRD)** dataset, introduit par Lu et al. (ECCV 2016), est un benchmark de référence pour la compréhension des relations visuelles entre objets.
+
+**Statistiques Complètes** :
+- **5,000 images** (4,000 train + 1,000 test), issues de MS-COCO et ImageNet
+- **100 catégories d'objets** (person, car, table, chair, dog, etc.)
+- **70 types de prédicats** (relations visuelles)
+- **37,993 triplets annotés** au format $\langle$sujet, prédicat, objet$\rangle$
+- Chaque triplet contient les bounding boxes des objets
+
+### Types de Relations
+
+Le dataset VRD couvre **70 prédicats** répartis en 4 catégories :
+
+1. **Relations Spatiales** (notre focus) :
+   - Verticales : on, above, below, under, over
+   - Horizontales : left of, right of
+   - Proximité : near, next to, beside
+   - Containment : inside, outside, in
+
+2. **Relations d'Action** :
+   - Interactions : riding, holding, carrying, wearing, eating, drinking
+   - Manipulations : touching, pushing, pulling, kicking
+
+3. **Relations Comparatives** :
+   - Tailles : taller than, shorter than, bigger than
+   - Âges : older than, younger than
+
+4. **Autres Relations** :
+   - Propriétés : made of, has, part of, attached to
+   - États : watching, looking at, playing with
+
+### Notre Focus : 10 Relations Spatiales
+
+Pour ce projet, nous nous concentrons sur **10 relations spatiales pures** :
+
+| Catégorie | Relations | Support Test | % Total |
+|-----------|-----------|--------------|---------|
+| **Verticales** | on, above, below, under | 3,255 | 73.8% |
+| **Horizontales** | left of, right of | 221 | 5.0% |
+| **Proximité** | near, next to | 911 | 20.7% |
+| **Containment** | inside, outside | 22 | 0.5% |
+| **TOTAL** | **10 classes** | **4,409** | **100%** |
+
+### Distribution des Classes (Test Set)
 
 ---
 
@@ -76,6 +127,61 @@ Développer un modèle capable de comprendre et classifier les **relations spati
           │   SupCon)     │
           └───────────────┘
 ```
+
+### Architecture Détaillée
+
+Notre approche **dual-encoder** apprend simultanément deux représentations complémentaires :
+
+#### 1. Visual Encoder (ResNet-50)
+
+**Objectif** : Capturer les caractéristiques visuelles des objets et leur contexte.
+
+**Pipeline** :
+1. **Extraction crops** : Deux crops 128×128 (sujet et objet) depuis l'image originale
+2. **Feature extraction** : ResNet-50 pré-entraîné sur ImageNet (frozen)
+   - Sujet : 2048D features
+   - Objet : 2048D features
+3. **Concatenation** : 4096D feature vector
+4. **Projection MLP** : 4096D → 1024D → 128D
+   - Reduce dimensionnalité
+   - Dropout 0.3 pour régularisation
+   - ReLU activations
+
+**Pourquoi frozen backbone ?**
+- Transfer learning depuis ImageNet (features génériques)
+- Évite overfitting (dataset VRD relativement petit)
+- Réduit coût computationnel
+
+#### 2. Spatial Encoder (MLP)
+
+**Objectif** : Encoder la géométrie pure de la relation spatiale.
+
+**Pipeline** :
+1. **Input** : Vecteur spatial 8D (voir section suivante)
+2. **MLP 3 couches** : 8D → 64D → 128D → 128D
+   - Expansion puis stabilisation
+   - Dropout 0.2
+   - ReLU activations
+3. **Output** : Embedding spatial 128D
+
+**Design clé** : Architecture légère car géométrie = information structurée
+
+#### 3. Contrastive Loss (InfoNCE)
+
+**Formulation** :
+```
+L = -log(exp(sim(z_v, z_s) / τ) / Σ exp(sim(z_v, z_s') / τ))
+```
+
+Où :
+- `z_v` : embedding visuel (128D)
+- `z_s` : embedding spatial (128D)
+- `sim()` : similarité cosine (après L2 normalization)
+- `τ = 0.07` : température
+
+**Objectif** : Aligner embeddings visuels et spatiaux correspondants dans l'espace latent.
+
+---
 
 ### Vecteur Géométrique (8D)
 
@@ -163,6 +269,9 @@ Epoch | Train Loss | Val Loss | Val Acc
 15    | 1.4701     | 1.4463   | 48.01%
 ```
 
+![Courbes Loss Exp #1](assets/exp1_loss_curve.png)
+*Courbes d'entraînement Exp #1 (ResNet-18): Convergence à epoch 15*
+
 **Résultats Test** :
 - **Accuracy**: 61.67%
 - Visual seul: 53.14%
@@ -207,6 +316,9 @@ Epoch | Train Loss | Val Loss | Val Acc
 23    | 0.6615     | 1.4205   | 56.88%
 ```
 
+![Courbes Loss Exp #2](assets/exp2_loss_curve.png)
+*Courbes d'entraînement Exp #2 (ResNet-50): Convergence plus stable, loss finale plus basse*
+
 **Résultats Test** :
 - **Accuracy**: 62.40%
 - Visual seul: 55.50%
@@ -227,6 +339,16 @@ Epoch | Train Loss | Val Loss | Val Acc
 | near | 0.33 | 0.02 | 0.04 | 348 ❌ |
 | inside | 0.00 | 0.00 | 0.00 | 19 ❌ |
 | outside | 0.00 | 0.00 | 0.00 | 3 ❌ |
+
+**Matrice de Confusion** :
+
+![Confusion Matrix Exp #2](assets/confusion_matrix_exp2.png)
+*Matrice de confusion (10×10): Excellente performance sur "on" et "above", confusion sur classes rares*
+
+**Observations** :
+- **Diagonale forte** : on (1700/1867), above (492/714)
+- **Confusion principale** : Classes rares → prédites comme "on" (biais)
+- **Pattern** : near ↔ next to (ambiguïté sémantique)
 
 **Amélioration vs Exp #1** :
 - Accuracy: +0.73 points
@@ -432,7 +554,7 @@ Ce projet a été réalisé dans le cadre d'un Master en Vision par Ordinateur, 
 - La généralisation cross-dataset
 - L'évaluation scientifique rigoureuse
 
-**Compétences démontrées** :
+**Compétences ** :
 - Implémentation PyTorch avancée
 - Conception d'architecture dual-encoder
 - Expérimentation systématique (6 configurations)
